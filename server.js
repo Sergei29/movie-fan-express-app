@@ -1,12 +1,7 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
- */
-
-const app = require("../app");
+const app = require("./app");
 const debug = require("debug")("movie-fan-express-app:server");
 const http = require("http");
+require("dotenv").config();
 
 /**
  * Get port from environment and store in Express.
@@ -26,7 +21,9 @@ const server = http.createServer(app);
  */
 
 server.listen(port, () => {
-  console.log(`Server runnning at http://localhost:${port}`);
+  if (process.env.NODE_ENV === "development") {
+    console.log(`Server runnning at http://localhost:${port}`);
+  }
 });
 
 server.on("error", onError);
