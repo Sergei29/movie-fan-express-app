@@ -1,13 +1,14 @@
 const app = require("./app");
 const debug = require("debug")("movie-fan-express-app:server");
 const http = require("http");
-require("dotenv").config();
+
+const { PORT, NODE_ENV } = require("./constants");
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(PORT || "3000");
 app.set("port", port);
 
 /**
@@ -21,7 +22,7 @@ const server = http.createServer(app);
  */
 
 server.listen(port, () => {
-  if (process.env.NODE_ENV === "development") {
+  if (NODE_ENV === "development") {
     console.log(`Server runnning at http://localhost:${port}`);
   }
 });
