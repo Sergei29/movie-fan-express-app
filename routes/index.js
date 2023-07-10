@@ -1,6 +1,6 @@
 const express = require("express");
 const { fetchData } = require("../utils/fetch");
-const { formatResults } = require("../utils/adaptors");
+const { formatResults, formatMovieDetails } = require("../utils/adaptors");
 const { THE_MOVIE_DB_API_KEY, THE_MOVIE_DB_BASE_URL } = require("../constants");
 
 const router = express.Router();
@@ -12,7 +12,10 @@ router.get("/", async (req, res, next) => {
   const { data, error } = await fetchData(nowPlayingUrl, { method: "GET" });
 
   if (error) {
-    res.render("error", { message: error });
+    res.render("error", {
+      message: error,
+      error: { status: error, stack: "" },
+    });
     return;
   }
 
@@ -23,14 +26,16 @@ router.get("/movie/:movieId", async (req, res, next) => {
   const movieId = req.params.movieId;
   const movieUrl = `${THE_MOVIE_DB_BASE_URL}/movie/${movieId}?api_key=${THE_MOVIE_DB_API_KEY}`;
   const { data, error } = await fetchData(movieUrl, { method: "GET" });
+
   if (error) {
-    res.render("error", { message: error, error });
+    res.render("error", {
+      message: error,
+      error: { status: error, stack: "" },
+    });
     return;
   }
 
-  console.log("data :>> ", data);
-
-  res.render("single-movie");
+  res.render("single-movie", { movie: formatMovieDetails(data) });
 });
 
 module.exports = router;

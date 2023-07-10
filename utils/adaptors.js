@@ -1,5 +1,19 @@
 const imageBaseUrl = "https://image.tmdb.org/t/p/w300";
 
+const isNullOrUndefined = (value) =>
+  typeof value === "undefined" || value === null;
+
+const isEmpty = (value) => {
+  if (isNullOrUndefined(value)) return true;
+  if (value === "") return true;
+  if (value instanceof Date) return false;
+  if (typeof value === "object" && Object.keys(value).length === 0) {
+    return true;
+  }
+
+  return false;
+};
+
 /**
  * @description formats the movies results received from the API payload
  * @param {{ adult: boolean;
@@ -40,14 +54,19 @@ const formatResults = (results) =>
 const movieDetails = {
   adult: false,
   backdrop_path: "/oqP1qEZccq5AD9TVTIaO6IGUj7o.jpg",
-  belongs_to_collection: null,
+  belongs_to_collection: {
+    id: 84,
+    name: "Indiana Jones Collection",
+    poster_path: "/lpxDrACKJhbbGOlwVMNz5YCj6SI.jpg",
+    backdrop_path: "/6kh59mZizZsttZPR0HAdXk6Ve2n.jpg",
+  }, // | null
   budget: 60000000,
   genres: [
     { id: 14, name: "Fantasy" },
     { id: 28, name: "Action" },
     { id: 12, name: "Adventure" },
   ],
-  homepage: "https://kotzmovie.com",
+  homepage: "https://kotzmovie.com", // | null
   id: 455476,
   imdb_id: "tt6528290",
   original_language: "en",
@@ -88,4 +107,33 @@ const movieDetails = {
   vote_count: 380,
 };
 
-module.exports = { formatResults, imageBaseUrl };
+/**
+ * @description formats single movie payload received from api
+ * @param { typeof movieDetails } movie
+ * @returns { typeof movieDetails}
+ */
+const formatMovieDetails = (movie) => ({
+  ...movie,
+  poster_path: imageBaseUrl + movie.poster_path,
+  production_companies: !isEmpty(movie.production_companies)
+    ? movie.production_companies.map((current) => ({
+        ...current,
+        logo_path: imageBaseUrl + current.logo_path,
+      }))
+    : [],
+  belongs_to_collection: !isEmpty(movie.belongs_to_collection)
+    ? {
+        ...movie.belongs_to_collection,
+        poster_path: imageBaseUrl + movie.belongs_to_collection.poster_path,
+        backdrop_path: imageBaseUrl + movie.belongs_to_collection.backdrop_path,
+      }
+    : {},
+});
+
+module.exports = {
+  formatResults,
+  formatMovieDetails,
+  imageBaseUrl,
+  isNullOrUndefined,
+  isEmpty,
+};

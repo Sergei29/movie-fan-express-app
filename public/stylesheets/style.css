@@ -45,3 +45,15 @@ a {
   font-size: 24px;
   font-weight: normal;
 }
+
+.img-logo {
+  width: 30px;
+}
+.list-item {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 25px 1fr;
+  margin-bottom: 8px;
+  justify-content: center;
+  align-content: center;
+}
