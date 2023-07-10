@@ -1,3 +1,5 @@
+const fetch = require("node-fetch");
+
 /**
  * @description fetch json type data
  * @param { string } url
