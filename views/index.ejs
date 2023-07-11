@@ -15,8 +15,8 @@
         <h1>Now Playing</h1>
       </div>
       <div class="col-sm-12">
-        <!-- we are passing { movies: Array<Movie> from route handler res.render(...) } -->
-        <% movies.forEach(movie=>{ %>
+        <!-- we are passing { results: Array<Movie> from route handler res.render(...) } -->
+        <% results.forEach(movie=>{ %>
         <div class="col-sm-4 col-md-3 poster">
           <a href="/movie/<%= movie.id %>" target="_blank">
             <img src="<%= movie.poster_path %>" alt="<%= movie.title %>" />
