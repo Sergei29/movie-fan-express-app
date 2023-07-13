@@ -9,15 +9,16 @@ const { THE_MOVIE_DB_API_KEY, THE_MOVIE_DB_BASE_URL } = require("../constants");
 
 const router = express.Router();
 
-const nowPlayingUrl = `${THE_MOVIE_DB_BASE_URL}/movie/now_playing?api_key=${THE_MOVIE_DB_API_KEY}`;
+const nowPlayingUrl = `${THE_MOVIE_DB_BASE_URL}/movie/top_rated?api_key=${THE_MOVIE_DB_API_KEY}`;
+const allMoviesUrl = `${THE_MOVIE_DB_BASE_URL}/movie?api_key=${THE_MOVIE_DB_API_KEY}`;
 
 /* GET home page. */
 router.get("/", async (req, res, next) => {
-  const { data, error } = await fetchData(nowPlayingUrl, { method: "GET" });
+  const { data, error } = await fetchData(allMoviesUrl, { method: "GET" });
 
   if (error) {
     res.render("error", {
-      message: error,
+      message: error || "Oups, an error occurred!",
       error: { status: error, stack: "" },
     });
     return;
@@ -33,7 +34,7 @@ router.get("/movie/:movieId", async (req, res, next) => {
 
   if (error) {
     res.render("error", {
-      message: error,
+      message: error || "Oups, an error occurred!",
       error: { status: error, stack: "" },
     });
     return;

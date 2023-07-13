@@ -14,9 +14,16 @@ const fetchData = async (url, options) => {
     const data = await res.json();
     return { data, error: null };
   } catch (error) {
+    let message = error instanceof Error ? error.message : error.toString();
+    if (typeof message !== "string") {
+      message = "Request failed";
+    } else if (message.trim() === "0") {
+      message = "Not found";
+    }
+
     return {
       data: null,
-      error: error instanceof Error ? error.message : error.toString(),
+      error: message,
     };
   }
 };
