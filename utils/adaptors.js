@@ -46,10 +46,12 @@ const isEmpty = (value) => {
  * vote_count: number;}[]}
  */
 const formatResults = (results) =>
-  results.map((item) => ({
-    ...item,
-    poster_path: imageBaseUrl + item.poster_path,
-  }));
+  results
+    ? results.map((item) => ({
+        ...item,
+        poster_path: imageBaseUrl + item.poster_path,
+      }))
+    : [];
 
 const movieDetails = {
   adult: false,
